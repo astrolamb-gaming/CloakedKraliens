@@ -1,5 +1,5 @@
 Standard
-A Skaraan war corporation has reached an agreement with the Kraliens to provide cloaking technology, marking a turning point in the war.
+Kraliens have Cloaks now.
 116 #F0D56E 
 147 #9da36c
 
