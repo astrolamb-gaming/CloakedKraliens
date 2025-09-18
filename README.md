@@ -1,4 +1,4 @@
-# Secret Meeting
+# Cloaked Kraliens
 A Skaraan war corporation has reached an agreement with the Kraliens to provide cloaking technology, marking a turning point in the war.
 
 # Objective 

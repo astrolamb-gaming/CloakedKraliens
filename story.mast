@@ -48,7 +48,6 @@ Properties:
     scanners = role("__player__")
     
     for ship in ships:
-        task_schedule(handle_elite_abilities, {"SPAWNED_ID":ship})
         for origin in scanners:
             task_schedule(update_elite_scan_info, {"origin": origin, "ship": ship})
     jump END
