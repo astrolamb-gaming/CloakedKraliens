@@ -1,0 +1,64 @@
+#
+# Set the Music and the sky box to use
+#
+# These are also executing labels, not data 
+# So define any common data before this
+#
+@media/music/default "Cosmos Default Music"
+@media/skybox/sky-bored-alice "borealis"
+
+# The above set the music and skybox to specific values
+#
+# For more sky box examples 
+#    as well as example of setting music based skybox
+#    See the story.mast in Legendary Missions
+#
+# https://github.com/artemis-sbs/LegendaryMissions/blob/main/story.mast
+#
+
+#
+# This makes the map available to the game start UI
+#    The properties section is for properties for this map
+#    Notice their are properties PLAYER_COUNT, DIFFICULTY, and GAME_TIME_LIMIT
+#    These are available to this script and they're used below
+#
+@map/secretmeeting "Cloaked Kraliens"
+" The ambassadors are meeting secretly at starbase Phoenix, a base hidden in an asteroid field.
+metadata:``` yaml
+Properties:
+    Player Ships: 'gui_int_slider("$text:int;low: 1.0;high:8.0;", var= "PLAYER_COUNT")'
+    Difficulty: 'gui_int_slider("$text:int;low: 1.0;high:11.0;", var= "DIFFICULTY")'
+    Meeting Length:  'gui_input("desc: Minutes;", var="GAME_TIME_LIMIT")'
+```
+    await task_schedule(spawn_players)
+    await task_schedule(default_player_friendly_eyes)
+
+
+//comms/gamemaster/commands
+    +"Give Cloak to Kraliens" give_all_kraliens_cloak
+    +"Remove Cloak fromKraliens" remove_all_kraliens_cloak
+
+=== give_all_kraliens_cloak
+    ships = side_members_set("kralien")
+    add_role(ships,"elite_cloak")
+    # TODO: For now assume all players are on the same side. Should really change that though
+    scanners = role("__player__")
+    
+    for ship in ships:
+        task_schedule(handle_elite_abilities, {"SPAWNED_ID":ship})
+        for origin in scanners:
+            task_schedule(update_elite_scan_info, {"origin": origin, "ship": ship})
+    jump END
+
+=== remove_all_kraliens_cloak
+    ships = side_members_set("kralien")
+    remove_role(ships,"elite_cloak")
+    # TODO: For now assume all players are on the same side. Should really change that though
+    scanners = role("__player__")
+    
+    for ship in ships:
+        task_schedule(handle_elite_abilities, {"SPAWNED_ID":ship})
+        for origin in scanners:
+            task_schedule(update_elite_scan_info, {"origin": origin, "ship": ship})
+    jump END
+
